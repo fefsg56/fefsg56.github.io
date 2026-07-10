@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>郭德仓 · 个人主页</title>
+<style>
+/* ========== CSS Variables & Reset ========== */
+:root {
+  --bg: #0a0a10;
+  --bg-secondary: #101018;
+  --card-bg: rgba(255,255,255,0.025);
+  --card-border: rgba(255,255,255,0.06);
+  --text: #b0b0c0;
+  --text-muted: #808898;
+  --heading: #ffffff;
+  --accent: #00d4ff;
+  --accent-dim: rgba(0,212,255,0.12);
+  --accent-glow: rgba(0,212,255,0.25);
+  --purple: #8b5cf6;
+  --purple-dim: rgba(139,92,246,0.12);
+  --green: #10b981;
+  --nav-bg: rgba(10,10,16,0.85);
+  --radius: 12px;
+  --max-width: 1100px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========== Grid Background ========== */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 30%, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 30%, black 30%, transparent 70%);
+}
+
+/* ========== Glow Orbs ========== */
+.glow-orb {
+  position: fixed; border-radius: 50%; filter: blur(120px); z-index: 0; pointer-events: none;
+}
+.glow-orb--1 { width: 500px; height: 500px; background: var(--accent-dim); top: -150px; right: -100px; opacity: 0.6; }
+.glow-orb--2 { width: 400px; height: 400px; background: var(--purple-dim); bottom: 20%; left: -100px; opacity: 0.4; }
+.glow-orb--3 { width: 300px; height: 300px; background: rgba(0,212,255,0.08); top: 60%; right: 20%; opacity: 0.5; }
+
+/* ========== Layout ========== */
+.container { max-width: var(--max-width); margin: 0 auto; padding: 0 40px; position: relative; z-index: 1; }
+
+section { padding: 100px 0; position: relative; z-index: 1; }
+
+.section-label {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 13px; font-weight: 600; letter-spacing: 3px;
+  color: var(--accent); text-transform: uppercase; margin-bottom: 16px;
+}
+.section-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--accent); }
+.section-title { font-size: 36px; font-weight: 700; color: var(--heading); margin-bottom: 40px; letter-spacing: -0.5px; }
+
+/* ========== Navigation ========== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: var(--nav-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 0; transition: var(--transition);
+}
+.nav-inner {
+  max-width: var(--max-width); margin: 0 auto; padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between; height: 64px;
+}
+.nav-logo { font-size: 18px; font-weight: 700; color: var(--heading); text-decoration: none; letter-spacing: -0.5px; }
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; list-style: none; gap: 32px; }
+.nav-links a {
+  color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500;
+  transition: var(--transition); position: relative;
+}
+.nav-links a:hover { color: var(--heading); }
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+  background: var(--accent); transition: var(--transition);
+}
+.nav-links a:hover::after { width: 100%; }
+.nav-cta {
+  padding: 8px 20px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; color: var(--heading); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: var(--transition); text-decoration: none;
+}
+.nav-cta:hover { background: rgba(255,255,255,0.12); border-color: var(--accent); }
+
+/* ========== Hero ========== */
+.hero { min-height: 100vh; display: flex; align-items: center; padding-top: 64px; }
+.hero-content { max-width: 720px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px; background: var(--accent-dim); border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 20px; font-size: 13px; color: var(--accent); margin-bottom: 28px;
+  animation: fadeInUp 0.6s ease;
+}
+.hero-badge-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.hero-name { font-size: 56px; font-weight: 800; color: var(--heading); line-height: 1.15; letter-spacing: -1px; animation: fadeInUp 0.6s ease 0.1s both; }
+.hero-name span { background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-title { font-size: 22px; color: var(--text); margin-top: 16px; font-weight: 400; animation: fadeInUp 0.6s ease 0.2s both; }
+.hero-title strong { color: var(--heading); }
+.hero-desc { font-size: 17px; color: var(--text-muted); margin-top: 12px; max-width: 560px; line-height: 1.85; animation: fadeInUp 0.6s ease 0.3s both; }
+.hero-actions { display: flex; gap: 16px; margin-top: 36px; animation: fadeInUp 0.6s ease 0.4s both; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 13px 30px;
+  border-radius: 8px; font-size: 15px; font-weight: 600; text-decoration: none;
+  cursor: pointer; transition: var(--transition); border: none;
+}
+.btn-primary { background: var(--accent); color: #000; }
+.btn-primary:hover { box-shadow: 0 0 30px var(--accent-glow); transform: translateY(-2px); }
+.btn-secondary { background: rgba(255,255,255,0.05); color: var(--heading); border: 1px solid rgba(255,255,255,0.1); }
+.btn-secondary:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+
+.hero-stats { display: flex; gap: 40px; margin-top: 60px; animation: fadeInUp 0.6s ease 0.5s both; }
+.hero-stat-value { font-size: 32px; font-weight: 700; color: var(--heading); letter-spacing: -0.5px; }
+.hero-stat-label { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ========== About ========== */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.about-card {
+  padding: 32px; background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: var(--radius); transition: var(--transition);
+}
+.about-card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-2px); }
+.about-card-icon { font-size: 28px; margin-bottom: 16px; }
+.about-card-title { font-size: 19px; font-weight: 600; color: var(--heading); margin-bottom: 14px; }
+.about-card-text { font-size: 16px; color: var(--text-muted); line-height: 1.85; }
+.about-highlight { color: var(--accent); font-weight: 500; }
+.about-quote {
+  padding: 24px 28px; background: var(--accent-dim); border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0; margin-top: 20px;
+  font-size: 16px; color: var(--text); line-height: 1.85; font-style: italic;
+}
+
+/* ========== Skills ========== */
+.skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+.skill-category {
+  padding: 28px; background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: var(--radius); transition: var(--transition);
+}
+.skill-category:hover { border-color: rgba(255,255,255,0.12); }
+.skill-cat-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.skill-cat-icon { font-size: 24px; }
+.skill-cat-title { font-size: 16px; font-weight: 600; color: var(--heading); }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.skill-tag {
+  padding: 6px 14px; font-size: 13px; font-weight: 500; border-radius: 6px;
+  background: rgba(255,255,255,0.04); color: var(--text); border: 1px solid rgba(255,255,255,0.06);
+  transition: var(--transition);
+}
+.skill-tag:hover { background: var(--accent-dim); border-color: rgba(0,212,255,0.3); color: var(--accent); }
+.skill-tag--primary { background: var(--accent-dim); border-color: rgba(0,212,255,0.2); color: var(--accent); }
+
+/* ========== Projects ========== */
+.projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+
+.project-card {
+  padding: 32px; background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: var(--radius); transition: var(--transition); position: relative; overflow: hidden;
+  display: flex; flex-direction: column; cursor: pointer;
+}
+.project-card:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-4px); }
+.project-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--purple)); opacity: 0; transition: var(--transition);
+}
+.project-card:hover::before { opacity: 1; }
+.project-card::after {
+  content: '点击查看详情 →'; position: absolute; bottom: 20px; right: 24px;
+  font-size: 12px; color: var(--accent); opacity: 0; transition: var(--transition);
+}
+.project-card:hover::after { opacity: 1; }
+.project-number { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 2px; margin-bottom: 12px; }
+.project-title { font-size: 21px; font-weight: 700; color: var(--heading); margin-bottom: 12px; }
+.project-desc { font-size: 15px; color: var(--text-muted); line-height: 1.8; flex: 1; }
+.project-tech { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; padding-bottom: 8px; }
+.project-tech-tag {
+  padding: 4px 10px; font-size: 12px; font-weight: 500; border-radius: 4px;
+  background: rgba(255,255,255,0.03); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ========== Experience ========== */
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before {
+  content: ''; position: absolute; left: 0; top: 4px; bottom: 8px;
+  width: 1px; background: linear-gradient(180deg, var(--accent), rgba(255,255,255,0.05));
+}
+.timeline-item { position: relative; margin-bottom: 36px; }
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-item::before {
+  content: ''; position: absolute; left: -32px; top: 7px; width: 9px; height: 9px;
+  background: var(--accent); border-radius: 50%;
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+.timeline-period { font-size: 13px; font-weight: 600; color: var(--accent); letter-spacing: 1.5px; text-transform: uppercase; }
+.timeline-title { font-size: 21px; font-weight: 700; color: var(--heading); margin: 4px 0 8px; }
+.timeline-subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 14px; }
+.timeline-details { list-style: none; }
+.timeline-details li {
+  font-size: 15px; color: var(--text); line-height: 1.85; padding-left: 16px; position: relative; margin-bottom: 6px;
+}
+.timeline-details li::before { content: '▸'; position: absolute; left: 0; top: 0; color: var(--accent); font-size: 10px; }
+
+/* ========== Contact ========== */
+.contact-inner { text-align: center; max-width: 600px; margin: 0 auto; }
+.contact-links { display: flex; justify-content: center; gap: 24px; margin-top: 32px; flex-wrap: wrap; }
+.contact-link {
+  display: flex; align-items: center; gap: 10px; padding: 15px 28px;
+  background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius);
+  color: var(--heading); text-decoration: none; font-size: 15px; font-weight: 500;
+  transition: var(--transition);
+}
+.contact-link:hover { border-color: var(--accent); background: var(--accent-dim); transform: translateY(-2px); }
+.contact-link-icon { font-size: 20px; }
+
+/* ========== Footer ========== */
+.footer {
+  padding: 32px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.04);
+}
+.footer-text { font-size: 14px; color: var(--text-muted); }
+.footer-text a { color: var(--accent); text-decoration: none; }
+
+/* ========== Scroll Reveal ========== */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ================================================================
+   Project Detail Modal
+   ================================================================ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.35s ease;
+  padding: 40px;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+.modal {
+  background: #12121d; border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px; width: 100%; max-width: 880px; max-height: calc(100vh - 80px);
+  overflow-y: auto; position: relative;
+  transform: translateY(24px) scale(0.97); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+}
+.modal-overlay.active .modal { transform: translateY(0) scale(1); }
+
+.modal-close {
+  position: sticky; top: 16px; float: right;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text); font-size: 20px; cursor: pointer; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--transition); margin-right: 16px;
+}
+.modal-close:hover { background: rgba(255,255,255,0.15); color: var(--heading); }
+
+.modal-body { padding: 0 40px 48px; clear: both; }
+
+.modal-header { margin-bottom: 28px; }
+.modal-number { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 2px; margin-bottom: 8px; }
+.modal-title { font-size: 28px; font-weight: 700; color: var(--heading); letter-spacing: -0.5px; margin-bottom: 16px; }
+.modal-tech-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.modal-tech-tag {
+  padding: 5px 14px; font-size: 13px; font-weight: 500; border-radius: 6px;
+  background: rgba(255,255,255,0.04); color: var(--text); border: 1px solid rgba(255,255,255,0.08);
+}
+
+.modal-section { margin-bottom: 32px; }
+.modal-section-title { font-size: 16px; font-weight: 700; color: var(--heading); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.modal-section-title::before { content: ''; display: block; width: 4px; height: 16px; background: var(--accent); border-radius: 2px; }
+
+.modal-desc { font-size: 16px; color: var(--text); line-height: 1.85; }
+.modal-desc p { margin-bottom: 14px; }
+.modal-desc p:last-child { margin-bottom: 0; }
+
+.modal-features { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.modal-features li {
+  font-size: 15px; color: var(--text); line-height: 1.75; padding: 10px 14px;
+  background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);
+}
+.modal-features li::before { content: '▸ '; color: var(--accent); }
+
+.modal-features--full { grid-template-columns: 1fr; }
+
+/* Image placeholder */
+.modal-images { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.modal-img-wrap {
+  border-radius: 10px; overflow: hidden; cursor: pointer; transition: var(--transition);
+  border: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.3);
+}
+.modal-img-wrap:hover { border-color: rgba(255,255,255,0.2); transform: scale(1.02); }
+.modal-img-wrap img { width: 100%; height: auto; display: block; object-fit: contain; max-height: 360px; }
+.modal-img-error {
+  aspect-ratio: 16/10; display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); font-size: 14px;
+}
+
+/* Image lightbox */
+.lightbox {
+  position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.92);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s ease; cursor: pointer;
+}
+.lightbox.active { opacity: 1; pointer-events: auto; }
+.lightbox img { max-width: 92vw; max-height: 92vh; object-fit: contain; border-radius: 6px; }
+.lightbox-close {
+  position: absolute; top: 24px; right: 24px; width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: none; color: #fff; font-size: 22px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition);
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
+
+.modal-links { display: flex; gap: 12px; flex-wrap: wrap; }
+.modal-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none;
+  transition: var(--transition);
+  background: rgba(255,255,255,0.05); color: var(--heading); border: 1px solid rgba(255,255,255,0.1);
+}
+.modal-link:hover { border-color: var(--accent); background: var(--accent-dim); }
+
+/* Architecture flow diagram */
+.modal-arch {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding: 20px 24px; background: rgba(255,255,255,0.02);
+  border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 16px;
+}
+.modal-arch-node {
+  padding: 8px 16px; background: var(--accent-dim); border: 1px solid rgba(0,212,255,0.25);
+  border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--accent);
+  white-space: nowrap;
+}
+.modal-arch-arrow { color: var(--text-muted); font-size: 18px; font-weight: 700; }
+
+/* ========== Scrollbar ========== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+
+.modal::-webkit-scrollbar { width: 5px; }
+.modal::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 3px; }
+
+/* Body scroll lock */
+body.modal-open { overflow: hidden; }
+</style>
+</head>
+<body>
+
+<!-- Background effects -->
+<div class="bg-grid"></div>
+<div class="glow-orb glow-orb--1"></div>
+<div class="glow-orb glow-orb--2"></div>
+<div class="glow-orb glow-orb--3"></div>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">郭<span>德仓</span></a>
+    <ul class="nav-links">
+	      <li><a href="#skills">技能</a></li>
+	      <li><a href="#projects">项目</a></li>
+	      <li><a href="#experience">经历</a></li>
+	      <li><a href="#about">关于我</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">联系我</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span> 寻找机会中 · 随时到岗
+      </div>
+      <h1 class="hero-name">
+        你好，我是<br><span>郭德仓</span>
+      </h1>
+      <p class="hero-title">
+        <strong>运维 × AI工程 × 全栈交付</strong>
+      </p>
+      <p class="hero-desc">
+        物联网工程专业 2026 届毕业生。深度使用 AI 编程工具独立完成多个完整项目，擅长用 AI 高效交付工程结果。给我一个 AI 工具，我能用比别人快得多的速度交付一个完整项目。
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">查看项目 →</a>
+        <a href="#contact" class="btn btn-secondary">联系我</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-value">10+</div>
+          <div class="hero-stat-label">独立完成项目</div>
+        </div>
+        <div>
+          <div class="hero-stat-value">2年</div>
+          <div class="hero-stat-label">校园IT运维经验</div>
+        </div>
+        <div>
+          <div class="hero-stat-value">30+</div>
+          <div class="hero-stat-label">掌握技术栈</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Skills -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label reveal">Skills</div>
+    <h2 class="section-title reveal">技术能力</h2>
+    <div class="skills-grid">
+      <div class="skill-category reveal">
+        <div class="skill-cat-header">
+          <span class="skill-cat-icon">🤖</span>
+          <span class="skill-cat-title">AI 工程工具</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag skill-tag--primary">Claude Code</span>
+          <span class="skill-tag skill-tag--primary">Cursor</span>
+          <span class="skill-tag">GitHub Copilot</span>
+          <span class="skill-tag">Prompt Engineering</span>
+          <span class="skill-tag">DeepSeek API</span>
+          <span class="skill-tag">通义千问</span>
+          <span class="skill-tag">AI工作流设计</span>
+        </div>
+      </div>
+      <div class="skill-category reveal">
+        <div class="skill-cat-header">
+          <span class="skill-cat-icon">🖥️</span>
+          <span class="skill-cat-title">运维 & 部署</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag skill-tag--primary">Linux</span>
+          <span class="skill-tag skill-tag--primary">Docker</span>
+          <span class="skill-tag">Docker Compose</span>
+          <span class="skill-tag">Nginx</span>
+          <span class="skill-tag">SSH</span>
+          <span class="skill-tag">Shell 脚本</span>
+          <span class="skill-tag">防火墙配置</span>
+          <span class="skill-tag">MySQL</span>
+        </div>
+      </div>
+      <div class="skill-category reveal">
+        <div class="skill-cat-header">
+          <span class="skill-cat-icon">💻</span>
+          <span class="skill-cat-title">开发语言</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag skill-tag--primary">Python</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">Java</span>
+          <span class="skill-tag">C</span>
+          <span class="skill-tag">HTML / CSS</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">Flask</span>
+          <span class="skill-tag">Node.js</span>
+        </div>
+      </div>
+      <div class="skill-category reveal">
+        <div class="skill-cat-header">
+          <span class="skill-cat-icon">🔍</span>
+          <span class="skill-cat-title">逆向 & 安全</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Frida</span>
+          <span class="skill-tag">IDA Pro</span>
+          <span class="skill-tag">jadx</span>
+          <span class="skill-tag">APK 脱壳</span>
+          <span class="skill-tag">AES 加密分析</span>
+          <span class="skill-tag">Charles/Wireshark</span>
+          <span class="skill-tag">协议逆向</span>
+        </div>
+      </div>
+      <div class="skill-category reveal">
+        <div class="skill-cat-header">
+          <span class="skill-cat-icon">📱</span>
+          <span class="skill-cat-title">移动 & 自动化</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Android SDK</span>
+          <span class="skill-tag">Appium</span>
+          <span class="skill-tag">ADB</span>
+          <span class="skill-tag">customtkinter</span>
+          <span class="skill-tag">多线程并发</span>
+          <span class="skill-tag">Socket 通信</span>
+        </div>
+      </div>
+      <div class="skill-category reveal">
+        <div class="skill-cat-header">
+          <span class="skill-cat-icon">🔩</span>
+          <span class="skill-cat-title">硬件 & IoT</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">STM32</span>
+          <span class="skill-tag">ESP8266</span>
+          <span class="skill-tag">嵌入式 C</span>
+          <span class="skill-tag">传感器</span>
+          <span class="skill-tag">多媒体设备调试</span>
+          <span class="skill-tag">计算机组装维修</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label reveal">Projects</div>
+    <h2 class="section-title reveal">项目经历</h2>
+    <p class="reveal" style="color:var(--text-muted);margin-top:-28px;margin-bottom:36px;font-size:15px;">
+      ⚡ 以下项目 <strong style="color:var(--accent);">90%+</strong> 代码由 AI 辅助生成，我负责需求分析、系统架构设计、调试排错和最终部署上线
+    </p>
+    <div class="projects-grid">
+
+      <!-- Project 1: IoT Parking -->
+      <div class="project-card reveal" data-project="iot-parking">
+        <div class="project-number">01 / 毕业设计</div>
+        <h3 class="project-title">基于IoT的智慧化停车场管理系统</h3>
+        <p class="project-desc">
+          从硬件到云端的完整物联网系统：红外传感器 → STM32 裸机 C 开发 → ESP8266 WiFi → 双语言云端服务（Node.js + Python）→ Android App 可视化车位地图。独立完成硬件焊接组装、全链路联调和系统文档。
+        </p>
+        <div class="project-tech">
+          <span class="project-tech-tag">STM32</span>
+          <span class="project-tech-tag">ESP8266</span>
+          <span class="project-tech-tag">C (SPL)</span>
+          <span class="project-tech-tag">Node.js</span>
+          <span class="project-tech-tag">Python</span>
+          <span class="project-tech-tag">Android</span>
+          <span class="project-tech-tag">SQLite</span>
+          <span class="project-tech-tag">WebSocket</span>
+        </div>
+      </div>
+
+      <!-- Project 2: AI Content -->
+      <div class="project-card reveal" data-project="ai-content">
+        <div class="project-number">02 / AI 应用</div>
+        <h3 class="project-title">AI 多平台内容生成系统</h3>
+        <p class="project-desc">
+          自动抓取 5 平台热搜 → AI 生成选题 → 适配 6 平台风格（抖音/小红书/公众号/B站/快手/头条）一键生成脚本、笔记或文章。集成 AI 文生图和文生视频，Flask + 响应式 Web 全流程操作后台。
+        </p>
+        <div class="project-tech">
+          <span class="project-tech-tag">Python Flask</span>
+          <span class="project-tech-tag">DeepSeek</span>
+          <span class="project-tech-tag">通义千问</span>
+          <span class="project-tech-tag">ThreadPoolExecutor</span>
+          <span class="project-tech-tag">RESTful API</span>
+        </div>
+      </div>
+
+      <!-- Project 3: Campus Run -->
+      <div class="project-card reveal" data-project="campus-run">
+        <div class="project-number">03 / 逆向工程</div>
+        <h3 class="project-title">校园跑自动化工具（含商业化运营）</h3>
+        <p class="project-desc">
+          完整商业级桌面软件：逆向 App 加密协议 + Frida 动态 Hook 绕过加固 + 代理池规避风控 + customtkinter 暗色 GUI + 机器码激活授权。面向用户分发运营，远程服务器部署。
+        </p>
+        <div class="project-tech">
+          <span class="project-tech-tag">Python</span>
+          <span class="project-tech-tag">Frida</span>
+          <span class="project-tech-tag">AES 逆向</span>
+          <span class="project-tech-tag">代理池</span>
+          <span class="project-tech-tag">customtkinter</span>
+          <span class="project-tech-tag">HMAC-SHA256</span>
+        </div>
+      </div>
+
+      <!-- Project 5: Course Auto -->
+      <div class="project-card reveal" data-project="course-auto">
+        <div class="project-number">04 / 加密逆向</div>
+        <h3 class="project-title">爱课程视频自动刷课工具</h3>
+        <p class="project-desc">
+          逆向分析 Web 端视频进度上报协议，定位 CryptoJS AES-128-ECB + PKCS7 加密逻辑并完整复现。多线程并发 16 倍速刷课，支持断点续刷和失败重试。
+        </p>
+        <div class="project-tech">
+          <span class="project-tech-tag">Python</span>
+          <span class="project-tech-tag">AES-128-ECB</span>
+          <span class="project-tech-tag">CryptoJS 逆向</span>
+          <span class="project-tech-tag">多线程并发</span>
+          <span class="project-tech-tag">抓包分析</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Experience -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label reveal">Experience</div>
+    <h2 class="section-title reveal">实践经历</h2>
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <div class="timeline-period">在校期间 · 长期兼职</div>
+        <h3 class="timeline-title">黄河交通学院 信息中心 · IT 运维助理</h3>
+        <div class="timeline-subtitle">独立负责一栋 5 层教学楼（65 间多媒体教室 + 3 间机房）</div>
+        <ul class="timeline-details">
+          <li>每日巡检多媒体教室设备（投影仪、中控、功放音响、幕布），课间 10 分钟内响应教师报修</li>
+          <li>管理 3 间计算机机房：系统镜像批量部署（Ghost/网络克隆）、软件更新、硬盘还原卡维护、考试环境准备</li>
+          <li>承担校级大型活动（开学典礼、招聘会、学术讲座、比赛等）现场技术支持——音响调试、LED大屏/投影切换、灯光控制</li>
+          <li>协助信息中心 IT 资产盘点、标签管理、报废登记和设备借用归还台账维护</li>
+          <li>建立设备故障台账，记录各教室设备型号、更换记录和历史故障，方便快速定位</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <div class="container">
+    <div class="section-label reveal">About</div>
+    <h2 class="section-title reveal">关于我</h2>
+    <div class="about-grid">
+      <div class="about-card reveal">
+        <div class="about-card-icon">🎯</div>
+        <div class="about-card-title">自我定位</div>
+        <div class="about-card-text">
+          不是那种能在白板上手写红黑树的程序员。但是——<br><br>
+          给我一台服务器，我能从装系统开始到 Docker 跑起来你的应用；<br><br>
+          给我一个 AI 工具，我能用比别人快得多的速度交付一个完整项目；<br><br>
+          会场音响不响了、网络不通了、大屏不亮了，我能现场排查解决。<br><br>
+          <strong style="color: var(--accent);">适合做「离问题最近的那个人」——不管是机房故障还是工程交付。</strong>
+        </div>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-card-icon">🔧</div>
+        <div class="about-card-title">职业方向</div>
+        <div class="about-card-text">
+          <p style="margin-bottom: 20px;">
+            <span class="about-highlight">运维工程师 / IT 技术支持</span><br>
+            发挥信息化设备维护、故障排查、活动保障的实操经验，能快速上手企业 IT 环境。
+          </p>
+          <p>
+            <span class="about-highlight">AI 应用工程师</span><br>
+            利用对 AI 编程工具的深度使用经验，帮助团队提升研发效率、搭建 AI 工作流。
+          </p>
+        </div>
+        <div class="about-quote">
+          "AI 不是替代开发者的威胁，而是放大工程能力的杠杆——会用和不会用的人，交付速度差一个数量级。"
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="section-label reveal" style="justify-content:center;">Contact</div>
+      <h2 class="section-title reveal" style="text-align:center;">联系我</h2>
+      <p class="reveal" style="color:var(--text-muted);margin-top:-28px;margin-bottom:8px;font-size:15px;">
+        如果你对我的经历感兴趣，欢迎随时联系
+      </p>
+      <div class="contact-links reveal">
+        <a href="mailto:17513678705@163.com" class="contact-link">
+          <span class="contact-link-icon">📧</span> 17513678705@163.com
+        </a>
+        <a href="#" class="contact-link" id="wechatBtn">
+          <span class="contact-link-icon">💬</span> 微信：17513678705
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <p class="footer-text">
+      © 2026 郭德仓 · 用 AI 改变工作方式 · Powered by <a href="https://claude.ai/code" target="_blank">Claude Code</a>
+    </p>
+  </div>
+</footer>
+
+<!-- ================================================================
+     Project Detail Modal
+     ================================================================ -->
+<!-- Image Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">✕</button>
+  <img src="" alt="" id="lightboxImg">
+</div>
+
+<!-- Project Detail Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modalClose" aria-label="关闭">✕</button>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+// ==================== Project Detail Data ====================
+const projectData = {
+  'iot-parking': {
+    number: '01 / 毕业设计',
+    title: '基于IoT的智慧化停车场管理系统',
+    techs: ['STM32F103C8T6', 'ESP8266', 'C (SPL)', 'Node.js', 'Python Flask', 'Android Java', 'SQLite', 'WebSocket', 'I2C', 'USART'],
+    architecture: ['红外传感器', 'STM32', 'ESP8266 WiFi', 'TCP Server', 'HTTP API', 'Android App'],
+    desc: `
+      <p>独立完成了从硬件到云端的<strong style="color:var(--accent);">全栈物联网毕设项目</strong>。系统通过红外传感器实时检测车位占用状态，STM32 主控采集数据并通过 ESP8266 WiFi 模块上报至云端服务器，Android App 以可视化车位地图向车主展示实时空闲车位，支持停车引导和历史记录查询。</p>
+      <p>实现了<strong style="color:var(--heading);">"传感器 → 单片机 → WiFi → 云服务器 → 手机App"</strong>的完整物联网数据链路，从硬件焊接到服务端部署全流程独立完成。</p>
+    `,
+    features: [
+      'STM32F103C8T6 裸机开发，手写 GPIO/USART/I2C/TIM 驱动（标准外设库 SPL）',
+      '4 路红外传感器 + 双色 LED 指示灯（红=占用/绿=空闲）+ OLED 屏实时状态',
+      'ESP8266 AT 指令 WiFi 透传，USART 串口通信，TCP 长连接上报 JSON 数据',
+      'WiFi 断线自动重连机制，确保数据链路可靠',
+      '双语言服务端实现（Node.js Express + Python Flask），均支持 TCP+HTTP+SQLite',
+      'Node.js 版额外支持 WebSocket 实时推送车位状态变化',
+      'Android App：Retrofit + 自定义车位地图控件 + 定时刷新 + 历史记录',
+      '提供完整系统架构文档：引脚分配、通信协议、数据格式定义和网络拓扑',
+    ],
+    links: [],
+    images: [
+      'src/基于IoT的智慧化停车场管理系统图1.png',
+      'src/基于IoT的智慧化停车场管理系统图2.png'
+    ]
+  },
+
+  'ai-content': {
+    number: '02 / AI 应用',
+    title: 'AI 多平台内容生成系统',
+    techs: ['Python Flask', 'DeepSeek API', '通义千问', '小米Mimo', 'HTML/CSS/JS', 'ThreadPoolExecutor', 'RESTful API', '通义万相'],
+    architecture: ['热搜抓取', 'AI 选题引擎', '多平台风格适配', '并行内容生成', 'Web 操作后台'],
+    desc: `
+      <p>独立开发了一套面向自媒体运营的<strong style="color:var(--accent);">AI 内容生成工具</strong>。系统自动抓取微博、知乎、百度、抖音等平台的热搜数据，基于大语言模型将热点转化为可创作的主题，再根据目标平台的特点，自动生成符合各平台调性的脚本、笔记或文章。</p>
+      <p>支持 AI 文生图和文生视频，实现了<strong style="color:var(--heading);">从选题到出片的半自动化流程</strong>。后端采用 Flask 框架，前端为响应式 Web 界面，生成器模块支持多 AI 厂商灵活切换。</p>
+    `,
+    features: [
+      '抓取微博、知乎、百度、抖音、头条 5 个主流平台热搜，含缓存策略防封',
+      '多平台风格引擎：每个平台独立配置语调、节奏、排版规则，内容贴合平台调性',
+      '支持 DeepSeek / 通义千问 / Mimo 多 AI 后端灵活切换，统一生成器模式解耦',
+      'ThreadPoolExecutor 并行生成，3 个平台同时产出内容',
+      '集成 AI 文生图（通义万相）和文生视频能力',
+      '统一风格系统：确保同一主题在视频脚本、封面图、公众号文章中视觉一致',
+      '全流程 Web 操作界面，选择主题后一键生成全平台内容',
+    ],
+    links: [],
+    images: [
+      'src/AI 多平台内容生成系统图1.png',
+      'src/AI 多平台内容生成系统图2.png'
+    ]
+  },
+
+  'campus-run': {
+    number: '03 / 逆向工程',
+    title: '校园跑自动化工具（含商业化运营）',
+    techs: ['Python', 'customtkinter', 'Frida', 'AES 加密', 'Requests', '代理池', 'SSH', 'HMAC-SHA256'],
+    architecture: ['App 逆向分析', '加密协议还原', 'Frida 动态 Hook', '代理池轮换', 'GUI 桌面端', '远程部署'],
+    desc: `
+      <p>针对山东校园跑 App 开发了一套<strong style="color:var(--accent);">完整的自动化提交工具</strong>，包含 GUI 桌面端和 CLI 命令行两种模式。通过逆向分析 App 的网络协议和签名算法，实现了服务端请求的完全模拟。</p>
+      <p>工具采用机器码绑定 + HMAC-SHA256 激活码的授权机制，<strong style="color:var(--heading);">面向用户分发运营</strong>，具备完整的商业化软件形态。</p>
+    `,
+    features: [
+      '逆向分析 App 端 AES 加密和请求签名，Python 侧完整复现加密全链路',
+      'Frida 动态 Hook：USB 连接手机，让 App 实时生成签名 header，绕过加固保护',
+      '代理池模块：自动获取/验证/轮换代理 IP，规避服务端频率限制和 IP 风控',
+      'customtkinter 现代化暗色 GUI，含激活对话框、多账号面板、运行日志实时输出',
+      '机器码绑定 + HMAC-SHA256 激活码授权，防破解保护',
+      '多线程并发提交，支持同时跑多个账号',
+      '远程服务器部署脚本 + crontab 定时任务调度',
+    ],
+    links: [],
+    images: [
+      'src/校园跑自动化工具（含商业化运营）图1.png',
+      'src/校园跑自动化工具（含商业化运营）图2.jpg'
+    ]
+  },
+
+  'course-auto': {
+    number: '04 / 加密逆向',
+    title: '爱课程视频自动刷课工具',
+    techs: ['Python', 'Requests', 'AES-128-ECB', 'PKCS7', 'CryptoJS 逆向', '多线程并发', 'Charles'],
+    architecture: ['抓包分析', 'JS 加密逆向', 'Python 复现加密', '多线程刷课', '进度检测'],
+    desc: `
+      <p>针对爱课程（iCourses）平台的视频学习任务，<strong style="color:var(--accent);">逆向分析了其 Web 端进度上报机制</strong>。发现平台使用 AES-128-ECB + PKCS7 加密保护进度上报数据，完成 CryptoJS 加密逻辑的 Python 复现后，编写了多线程并发速刷脚本。</p>
+      <p>支持单课程和 28 门课程全量两种模式，<strong style="color:var(--heading);">16 倍速 + 8 线程并发</strong>，含断点续刷和失败自动重试。</p>
+    `,
+    features: [
+      '逆向分析视频 ticker 进度上报协议，Charles 抓包还原请求参数结构',
+      '定位前端 CryptoJS AES-128-ECB + PKCS7 加密调用链',
+      'Python 侧完整复现加密算法，含自检验证（与浏览器 CryptoJS 输出一致）',
+      '多线程并发刷视频，支持批量课程处理',
+      '进度检测机制：已完成视频自动跳过，只处理未完成部分',
+      '失败自动重试 + 断点续刷，稳定运行不中断',
+    ],
+    links: [],
+    images: [
+      'src/爱课程视频自动刷课工具图1.jpg',
+      'src/爱课程视频自动刷课工具图2.jpg'
+    ]
+  },
+};
+// ==================== Modal Logic ====================
+const modalOverlay = document.getElementById('modalOverlay');
+const modalBody = document.getElementById('modalBody');
+const modalClose = document.getElementById('modalClose');
+
+function openModal(projectId) {
+  const data = projectData[projectId];
+  if (!data) return;
+
+  // Build architecture flow HTML
+  let archHTML = '';
+  if (data.architecture) {
+    const nodes = data.architecture.map((node, i) => {
+      let html = `<span class="modal-arch-node">${node}</span>`;
+      if (i < data.architecture.length - 1) {
+        html += `<span class="modal-arch-arrow">→</span>`;
+      }
+      return html;
+    }).join('');
+    archHTML = `<div class="modal-arch">${nodes}</div>`;
+  }
+
+  // Build features HTML
+  const featuresFull = data.features.length > 4 ? ' modal-features--full' : '';
+  const featuresHTML = data.features.map(f => `<li>${f}</li>`).join('');
+
+  // Build images HTML
+  let imagesHTML = '';
+  if (data.images && data.images.length > 0) {
+    const imgTags = data.images.map((src, i) => `
+      <div class="modal-img-wrap" data-src="${src}">
+        <img src="${src}" alt="${data.title} - 截图 ${i + 1}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'modal-img-error\\'>🖼️ 图片加载失败</div>'">
+      </div>`).join('');
+    imagesHTML = `
+      <div class="modal-section">
+        <div class="modal-section-title">项目截图</div>
+        <div class="modal-images">${imgTags}</div>
+      </div>`;
+  }
+
+  // Build links HTML
+  let linksHTML = '';
+  if (data.links && data.links.length > 0) {
+    const linkItems = data.links.map(l =>
+      `<a href="${l.url}" class="modal-link" target="_blank">🔗 ${l.label}</a>`
+    ).join('');
+    linksHTML = `
+      <div class="modal-section">
+        <div class="modal-section-title">相关链接</div>
+        <div class="modal-links">${linkItems}</div>
+      </div>`;
+  } else {
+    // Show placeholder for links
+    linksHTML = `
+      <div class="modal-section">
+        <div class="modal-section-title">相关链接</div>
+        <div class="modal-links">
+          <span style="font-size:14px;color:var(--text-muted);">📌 如有 GitHub 仓库或演示链接，可在此处添加</span>
+        </div>
+      </div>`;
+  }
+
+  modalBody.innerHTML = `
+    <div class="modal-header">
+      <div class="modal-number">${data.number}</div>
+      <h2 class="modal-title">${data.title}</h2>
+      <div class="modal-tech-row">
+        ${data.techs.map(t => `<span class="modal-tech-tag">${t}</span>`).join('')}
+      </div>
+    </div>
+
+    ${archHTML}
+
+    <div class="modal-section">
+      <div class="modal-section-title">项目概述</div>
+      <div class="modal-desc">${data.desc}</div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">核心亮点</div>
+      <ul class="modal-features ${featuresFull}">${featuresHTML}</ul>
+    </div>
+
+    ${imagesHTML}
+    ${linksHTML}
+  `;
+
+  modalOverlay.classList.add('active');
+  document.body.classList.add('modal-open');
+  modalBody.parentElement.scrollTop = 0;
+}
+
+function closeModal() {
+  modalOverlay.classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+
+// Click project cards
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const projectId = card.dataset.project;
+    openModal(projectId);
+  });
+});
+
+// Close button
+modalClose.addEventListener('click', closeModal);
+
+// Click overlay background
+modalOverlay.addEventListener('click', (e) => {
+  if (e.target === modalOverlay) closeModal();
+});
+
+// ESC key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (lightbox.classList.contains('active')) closeLightbox();
+    else if (modalOverlay.classList.contains('active')) closeModal();
+  }
+});
+
+// ==================== Image Lightbox ====================
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxClose = document.getElementById('lightboxClose');
+
+function openLightbox(src) {
+  lightboxImg.src = src;
+  lightbox.classList.add('active');
+  document.body.classList.add('modal-open');
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) closeLightbox();
+});
+
+// Image click delegation inside modal
+document.getElementById('modal').addEventListener('click', (e) => {
+  const wrap = e.target.closest('.modal-img-wrap');
+  if (wrap && wrap.dataset.src) {
+    openLightbox(wrap.dataset.src);
+  }
+});
+
+// ==================== Scroll Reveal ====================
+const revealElements = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+revealElements.forEach(el => observer.observe(el));
+
+// ==================== Nav Scroll Effect ====================
+const nav = document.querySelector('.nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    nav.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
+  } else {
+    nav.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+  }
+});
+
+// ==================== Smooth Scroll ====================
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const href = this.getAttribute('href');
+    if (href === '#') return;
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+
+// ==================== WeChat Handler ====================
+document.getElementById('wechatBtn').addEventListener('click', function(e) {
+  e.preventDefault();
+  const wechat = '17513678705';
+  navigator.clipboard?.writeText(wechat).then(() => {
+    const orig = this.innerHTML;
+    this.innerHTML = '<span class="contact-link-icon">✅</span> 微信号已复制：' + wechat;
+    setTimeout(() => { this.innerHTML = orig; }, 2500);
+  }).catch(() => {
+    alert('微信号：' + wechat);
+  });
+});
+
+console.log('👋 你好！这个网站由 Claude Code AI 辅助生成（90%+ 代码）。');
+console.log('🖱️ 点击任意项目卡片可查看详细信息。');
+</script>
+
+</body>
+</html>
