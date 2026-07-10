@@ -853,34 +853,12 @@ function openModal(projectId) {
   if (data.images && data.images.length > 0) {
     const imgTags = data.images.map((src, i) => `
       <div class="modal-img-wrap" data-src="${src}">
-        <img src="${src}" alt="${data.title} - 截图 ${i + 1}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'modal-img-error\\'>🖼️ 图片加载失败</div>'">
+        <img src="${encodeURI(src)}" alt="${data.title} - 截图 ${i + 1}">
       </div>`).join('');
     imagesHTML = `
       <div class="modal-section">
         <div class="modal-section-title">项目截图</div>
         <div class="modal-images">${imgTags}</div>
-      </div>`;
-  }
-
-  // Build links HTML
-  let linksHTML = '';
-  if (data.links && data.links.length > 0) {
-    const linkItems = data.links.map(l =>
-      `<a href="${l.url}" class="modal-link" target="_blank">🔗 ${l.label}</a>`
-    ).join('');
-    linksHTML = `
-      <div class="modal-section">
-        <div class="modal-section-title">相关链接</div>
-        <div class="modal-links">${linkItems}</div>
-      </div>`;
-  } else {
-    // Show placeholder for links
-    linksHTML = `
-      <div class="modal-section">
-        <div class="modal-section-title">相关链接</div>
-        <div class="modal-links">
-          <span style="font-size:14px;color:var(--text-muted);">📌 如有 GitHub 仓库或演示链接，可在此处添加</span>
-        </div>
       </div>`;
   }
 
@@ -906,7 +884,6 @@ function openModal(projectId) {
     </div>
 
     ${imagesHTML}
-    ${linksHTML}
   `;
 
   modalOverlay.classList.add('active');
@@ -964,13 +941,19 @@ lightbox.addEventListener('click', (e) => {
   if (e.target === lightbox) closeLightbox();
 });
 
-// Image click delegation inside modal
-document.getElementById('modal').addEventListener('click', (e) => {
+// Image click delegation & error handling inside modal
+const modalEl = document.getElementById('modal');
+modalEl.addEventListener('click', (e) => {
   const wrap = e.target.closest('.modal-img-wrap');
   if (wrap && wrap.dataset.src) {
     openLightbox(wrap.dataset.src);
   }
 });
+modalEl.addEventListener('error', (e) => {
+  if (e.target.tagName === 'IMG' && e.target.parentElement?.classList.contains('modal-img-wrap')) {
+    e.target.parentElement.innerHTML = '<div class="modal-img-error">🖼️ 图片加载失败</div>';
+  }
+}, true);
 
 // ==================== Scroll Reveal ====================
 const revealElements = document.querySelectorAll('.reveal');
