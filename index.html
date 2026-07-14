@@ -1110,7 +1110,11 @@ function openModal(projectId) {
 
 function closeModal() {
   modalOverlay.classList.remove('active');
-  document.body.classList.remove('modal-open');
+  // The lightbox can be layered above the project modal. Keep scrolling
+  // locked until every overlay has actually been closed.
+  if (!lightbox.classList.contains('active')) {
+    document.body.classList.remove('modal-open');
+  }
 }
 
 // Click project cards
@@ -1150,7 +1154,10 @@ function openLightbox(src) {
 
 function closeLightbox() {
   lightbox.classList.remove('active');
-  document.body.classList.remove('modal-open');
+  lightboxImg.removeAttribute('src');
+  if (!modalOverlay.classList.contains('active')) {
+    document.body.classList.remove('modal-open');
+  }
 }
 
 lightboxClose.addEventListener('click', closeLightbox);
@@ -1214,13 +1221,22 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 document.getElementById('wechatBtn').addEventListener('click', function(e) {
   e.preventDefault();
   const wechat = '17513678705';
-  navigator.clipboard?.writeText(wechat).then(() => {
+  const showCopied = () => {
     const orig = this.innerHTML;
     this.innerHTML = '<span class="contact-link-icon">✅</span> 微信号已复制：' + wechat;
     setTimeout(() => { this.innerHTML = orig; }, 2500);
-  }).catch(() => {
+  };
+  const showWechat = () => {
     alert('微信号：' + wechat);
-  });
+  };
+
+  // Clipboard is unavailable on some mobile browsers and non-HTTPS pages.
+  // Avoid calling .then() on undefined when the API does not exist.
+  if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+    navigator.clipboard.writeText(wechat).then(showCopied).catch(showWechat);
+  } else {
+    showWechat();
+  }
 });
 
 // ==================== Mobile Nav Toggle ====================
@@ -1267,12 +1283,29 @@ document.addEventListener('click', function(e) {
   if (navOverlay && e.target === navOverlay) closeNav();
 });
 
-// Close nav when clicking a link - browser handles native hash scroll
+// Close nav and scroll explicitly. Relying on the browser's default hash
+// navigation is unreliable on mobile when the hash is already unchanged or
+// the fixed drawer is being closed in the same frame.
 navLinks.querySelectorAll('a').forEach(function(link) {
   link.addEventListener('click', function(e) {
     if (!navLinks.classList.contains('open')) return;
-    // Let browser handle hash navigation (html has scroll-behavior:smooth)
+    e.preventDefault();
+    const href = this.getAttribute('href');
+    const target = href && href !== '#' ? document.querySelector(href) : null;
     closeNav();
+
+    if (!target) return;
+
+    requestAnimationFrame(function() {
+      const navHeight = nav.getBoundingClientRect().height;
+      const targetTop = target.getBoundingClientRect().top + window.scrollY - navHeight;
+      window.scrollTo({ top: targetTop, behavior: 'smooth' });
+
+      // Keep the URL meaningful without triggering a second native hash jump.
+      if (window.location.hash !== href) {
+        history.pushState(null, '', href);
+      }
+    });
   });
 });
 
