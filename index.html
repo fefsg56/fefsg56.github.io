@@ -1227,37 +1227,34 @@ document.getElementById('wechatBtn').addEventListener('click', function(e) {
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
 let navOverlay = null;
-let _scrollY = 0;
+
+function preventTouchMove(e) {
+  e.preventDefault();
+}
 
 function openNav() {
   navToggle.classList.add('active');
   navLinks.classList.add('open');
-  // Create overlay
   if (!navOverlay) {
     navOverlay = document.createElement('div');
     navOverlay.className = 'nav-overlay';
     document.body.appendChild(navOverlay);
   }
   navOverlay.classList.add('active');
-  // Prevent body scroll without breaking scrollIntoView
-  _scrollY = window.scrollY;
-  document.body.style.position = 'fixed';
-  document.body.style.width = '100%';
-  document.body.style.top = -_scrollY + 'px';
+  // Prevent background scrolling via touchmove on overlay
+  navOverlay.addEventListener('touchmove', preventTouchMove, { passive: false });
 }
 
 function closeNav() {
   navToggle.classList.remove('active');
   navLinks.classList.remove('open');
-  if (navOverlay) navOverlay.classList.remove('active');
-  // Restore body scroll position
-  document.body.style.position = '';
-  document.body.style.width = '';
-  document.body.style.top = '';
-  window.scrollTo(0, _scrollY);
+  if (navOverlay) {
+    navOverlay.classList.remove('active');
+    navOverlay.removeEventListener('touchmove', preventTouchMove);
+  }
 }
 
-navToggle.addEventListener('click', () => {
+navToggle.addEventListener('click', function() {
   if (navLinks.classList.contains('open')) {
     closeNav();
   } else {
@@ -1266,33 +1263,29 @@ navToggle.addEventListener('click', () => {
 });
 
 // Close nav when clicking overlay
-document.addEventListener('click', (e) => {
+document.addEventListener('click', function(e) {
   if (navOverlay && e.target === navOverlay) closeNav();
 });
 
 // Close nav + scroll when clicking a nav link on mobile
-navLinks.querySelectorAll('a').forEach(link => {
+navLinks.querySelectorAll('a').forEach(function(link) {
   link.addEventListener('click', function(e) {
     if (!navLinks.classList.contains('open')) return;
-    e.preventDefault(); // prevent hash jump
-    e.stopPropagation(); // don't trigger overlay close
+    e.preventDefault();
+    e.stopPropagation();
     var href = this.getAttribute('href');
-    // Restore body scroll (closeNav restores position + scroll position)
     closeNav();
     if (href && href !== '#') {
       var target = document.querySelector(href);
       if (target) {
-        // Use rAF to ensure browser has applied position:'' before scrolling
-        requestAnimationFrame(function() {
-          target.scrollIntoView({ behavior: 'smooth' });
-        });
+        target.scrollIntoView({ behavior: 'smooth' });
       }
     }
   });
 });
 
 // Close nav on Escape
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape' && navLinks.classList.contains('open')) {
     closeNav();
   }
