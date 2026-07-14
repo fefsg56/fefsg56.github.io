@@ -1198,6 +1198,8 @@ window.addEventListener('scroll', () => {
 // ==================== Smooth Scroll ====================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function(e) {
+    // Skip nav links - mobile nav handler manages its own scrolling
+    if (this.closest('#navLinks')) return;
     const href = this.getAttribute('href');
     if (href === '#') return;
     e.preventDefault();
