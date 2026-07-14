@@ -960,7 +960,7 @@ const projectData = {
     ],
     links: [],
     images: [
-      'src/基于IoT的智慧化停车场管理系统图1.png',
+      'src/基于IoT的智慧化停车场管理系统图1.jpg',
       'src/基于IoT的智慧化停车场管理系统图2.png'
     ]
   },
@@ -985,8 +985,8 @@ const projectData = {
     ],
     links: [],
     images: [
-      'src/AI 多平台内容生成系统图1.png',
-      'src/AI 多平台内容生成系统图2.png'
+      'src/AI 多平台内容生成系统图1.jpg',
+      'src/AI 多平台内容生成系统图2.jpg'
     ]
   },
 
@@ -1070,7 +1070,7 @@ function openModal(projectId) {
   if (data.images && data.images.length > 0) {
     const imgTags = data.images.map((src, i) => `
       <div class="modal-img-wrap" data-src="${src}">
-        <img src="${encodeURI(src)}" alt="${data.title} - 截图 ${i + 1}">
+        <img src="${encodeURI(src)}" alt="${data.title} - 截图 ${i + 1}" loading="lazy" decoding="async">
       </div>`).join('');
     imagesHTML = `
       <div class="modal-section">
@@ -1259,10 +1259,23 @@ document.addEventListener('click', (e) => {
   if (navOverlay && e.target === navOverlay) closeNav();
 });
 
-// Close nav when clicking a nav link (mobile)
+// Close nav when clicking a nav link + scroll to target (mobile)
 navLinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    if (navLinks.classList.contains('open')) closeNav();
+  link.addEventListener('click', function(e) {
+    if (!navLinks.classList.contains('open')) return;
+    e.preventDefault();
+    e.stopPropagation();
+    var href = this.getAttribute('href');
+    closeNav(); // must restore body overflow before scrolling
+    if (href && href !== '#') {
+      var target = document.querySelector(href);
+      if (target) {
+        // Delay to let the nav close transition start before scrolling
+        setTimeout(function() {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }, 80);
+      }
+    }
   });
 });
 
