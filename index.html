@@ -1225,6 +1225,7 @@ document.getElementById('wechatBtn').addEventListener('click', function(e) {
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
 let navOverlay = null;
+let _scrollY = 0;
 
 function openNav() {
   navToggle.classList.add('active');
@@ -1236,14 +1237,22 @@ function openNav() {
     document.body.appendChild(navOverlay);
   }
   navOverlay.classList.add('active');
-  document.body.style.overflow = 'hidden';
+  // Prevent body scroll without breaking scrollIntoView
+  _scrollY = window.scrollY;
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
+  document.body.style.top = -_scrollY + 'px';
 }
 
 function closeNav() {
   navToggle.classList.remove('active');
   navLinks.classList.remove('open');
   if (navOverlay) navOverlay.classList.remove('active');
-  document.body.style.overflow = '';
+  // Restore body scroll position
+  document.body.style.position = '';
+  document.body.style.width = '';
+  document.body.style.top = '';
+  window.scrollTo(0, _scrollY);
 }
 
 navToggle.addEventListener('click', () => {
@@ -1259,21 +1268,22 @@ document.addEventListener('click', (e) => {
   if (navOverlay && e.target === navOverlay) closeNav();
 });
 
-// Close nav when clicking a nav link + scroll to target (mobile)
+// Close nav + scroll when clicking a nav link on mobile
 navLinks.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', function(e) {
     if (!navLinks.classList.contains('open')) return;
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault(); // prevent hash jump
+    e.stopPropagation(); // don't trigger overlay close
     var href = this.getAttribute('href');
-    closeNav(); // must restore body overflow before scrolling
+    // Restore body scroll (closeNav restores position + scroll position)
+    closeNav();
     if (href && href !== '#') {
       var target = document.querySelector(href);
       if (target) {
-        // Delay to let the nav close transition start before scrolling
-        setTimeout(function() {
+        // Use rAF to ensure browser has applied position:'' before scrolling
+        requestAnimationFrame(function() {
           target.scrollIntoView({ behavior: 'smooth' });
-        }, 80);
+        });
       }
     }
   });
