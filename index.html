@@ -367,6 +367,216 @@ section { padding: 100px 0; position: relative; z-index: 1; }
 
 /* Body scroll lock */
 body.modal-open { overflow: hidden; }
+
+/* ================================================================
+   RESPONSIVE DESIGN — Tablet & Mobile
+   ================================================================ */
+
+/* ---------- Hamburger Toggle Button ---------- */
+.nav-toggle {
+  display: none;
+  flex-direction: column; justify-content: center; align-items: center;
+  width: 36px; height: 36px; padding: 6px;
+  background: transparent; border: none; cursor: pointer;
+  gap: 5px; z-index: 110;
+}
+.nav-toggle span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text); border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: center;
+}
+.nav-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.active span:nth-child(2) { opacity: 0; }
+.nav-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile-only / Desktop-only helpers */
+.nav-mobile-only { display: none; }
+
+/* ---------- Tablet: ≤1024px ---------- */
+@media (max-width: 1024px) {
+  .container { padding: 0 30px; }
+  section { padding: 80px 0; }
+  .hero-name { font-size: 44px; }
+  .hero-title { font-size: 19px; }
+  .hero-desc { font-size: 15px; }
+  .section-title { font-size: 30px; }
+  .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  .about-grid { grid-template-columns: 1fr; gap: 20px; }
+  .projects-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .hero-stats { gap: 28px; }
+  .hero-stat-value { font-size: 26px; }
+  .glow-orb--1 { width: 350px; height: 350px; top: -100px; right: -80px; }
+  .glow-orb--2 { width: 280px; height: 280px; }
+  .glow-orb--3 { width: 200px; height: 200px; }
+}
+
+/* ---------- Tablet Portrait: ≤768px ---------- */
+@media (max-width: 768px) {
+  .container { padding: 0 20px; }
+  section { padding: 60px 0; }
+
+  /* --- Navigation --- */
+  .nav-toggle { display: flex; }
+  .nav-desktop-only { display: none; }
+  .nav-mobile-only { display: list-item; }
+
+  .nav-links {
+    position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh;
+    flex-direction: column; gap: 0;
+    background: #0e0e18; border-left: 1px solid rgba(255,255,255,0.06);
+    padding: 80px 28px 32px;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 105; overflow-y: auto;
+  }
+  .nav-links.open { right: 0; }
+
+  .nav-links a {
+    display: block; padding: 14px 0; font-size: 17px; font-weight: 600;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .nav-links a::after { display: none; }
+  .nav-mobile-only { margin-top: 16px; }
+  .nav-mobile-only a {
+    display: inline-block; padding: 10px 24px;
+    background: var(--accent); color: #000; border-radius: 8px;
+    font-size: 15px; font-weight: 600; text-align: center;
+  }
+
+  /* Mobile nav overlay */
+  .nav-overlay {
+    position: fixed; inset: 0; z-index: 104;
+    background: rgba(0,0,0,0.5); opacity: 0; pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  .nav-overlay.active { opacity: 1; pointer-events: auto; }
+
+  /* --- Hero --- */
+  .hero { min-height: auto; padding: 120px 0 60px; }
+  .hero-name { font-size: 34px; letter-spacing: -0.5px; }
+  .hero-title { font-size: 16px; margin-top: 10px; }
+  .hero-desc { font-size: 14px; margin-top: 10px; }
+  .hero-actions { flex-direction: column; gap: 12px; margin-top: 24px; }
+  .hero-actions .btn { justify-content: center; text-align: center; }
+  .hero-stats { flex-wrap: wrap; gap: 20px; margin-top: 36px; }
+  .hero-stat-value { font-size: 24px; }
+
+  /* --- Section headings --- */
+  .section-title { font-size: 26px; margin-bottom: 28px; }
+  .section-label { font-size: 12px; letter-spacing: 2px; }
+
+  /* --- Skills --- */
+  .skills-grid { grid-template-columns: 1fr; gap: 12px; }
+  .skill-category { padding: 20px; }
+
+  /* --- Projects --- */
+  .projects-grid { grid-template-columns: 1fr; gap: 14px; }
+  .project-card { padding: 24px; }
+  .project-card::after { opacity: 0.6; font-size: 11px; bottom: 16px; right: 20px; }
+  .project-title { font-size: 18px; }
+  .project-desc { font-size: 14px; }
+
+  /* --- About --- */
+  .about-grid { grid-template-columns: 1fr; gap: 16px; }
+  .about-card { padding: 24px; }
+  .about-card-text { font-size: 14px; }
+  .about-quote { font-size: 14px; padding: 16px 20px; }
+
+  /* --- Timeline --- */
+  .timeline { padding-left: 20px; }
+  .timeline-item::before { left: -24px; width: 7px; height: 7px; }
+  .timeline-title { font-size: 18px; }
+  .timeline-details li { font-size: 14px; }
+
+  /* --- Contact --- */
+  .contact-links { flex-direction: column; align-items: center; gap: 12px; }
+  .contact-link { width: 100%; max-width: 320px; justify-content: center; }
+
+  /* --- Footer --- */
+  .footer { padding: 24px 0; }
+  .footer-text { font-size: 13px; }
+
+  /* --- Glow orbs — shrink --- */
+  .glow-orb--1 { width: 250px; height: 250px; top: -80px; right: -60px; }
+  .glow-orb--2 { width: 200px; height: 200px; bottom: 15%; }
+  .glow-orb--3 { display: none; }
+}
+
+/* ---------- Mobile: ≤480px ---------- */
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  section { padding: 48px 0; }
+  .nav-inner { height: 56px; padding: 0 16px; }
+  .nav-logo { font-size: 16px; }
+  .nav-links { width: 85%; max-width: none; padding: 72px 20px 24px; }
+  .nav-links a { font-size: 16px; padding: 12px 0; }
+
+  .hero { padding: 100px 0 48px; }
+  .hero-badge { font-size: 12px; padding: 4px 12px; }
+  .hero-name { font-size: 28px; }
+  .hero-title { font-size: 15px; }
+  .hero-desc { font-size: 13px; }
+  .hero-stats { gap: 14px; }
+  .hero-stat-value { font-size: 22px; }
+  .hero-stat-label { font-size: 12px; }
+  .btn { padding: 12px 24px; font-size: 14px; width: 100%; justify-content: center; }
+
+  .section-title { font-size: 23px; }
+
+  .skill-category { padding: 16px; }
+  .skill-cat-title { font-size: 15px; }
+  .skill-tag { font-size: 12px; padding: 4px 10px; }
+  .project-card { padding: 20px; }
+  .project-title { font-size: 17px; }
+  .project-tech-tag { font-size: 11px; padding: 3px 8px; }
+
+  .about-card { padding: 20px; }
+  .about-card-title { font-size: 17px; }
+  .timeline-title { font-size: 17px; }
+  .timeline-details li { font-size: 13px; }
+
+  .glow-orb--1 { width: 180px; height: 180px; top: -60px; right: -40px; }
+  .glow-orb--2 { width: 140px; height: 140px; }
+}
+
+/* ================================================================
+   RESPONSIVE — Modal adaptations
+   ================================================================ */
+@media (max-width: 768px) {
+  .modal-overlay { padding: 0; align-items: flex-end; }
+  .modal {
+    max-width: 100%; max-height: 90vh;
+    border-radius: 20px 20px 0 0;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .modal-overlay.active .modal { transform: translateY(0); }
+  .modal-body { padding: 0 24px 36px; }
+  .modal-close { margin-right: 8px; top: 12px; }
+  .modal-title { font-size: 22px; }
+  .modal-features { grid-template-columns: 1fr; }
+  .modal-desc { font-size: 14px; }
+  .modal-arch { gap: 6px; padding: 14px 16px; }
+  .modal-arch-node { font-size: 11px; padding: 6px 10px; }
+  .modal-arch-arrow { font-size: 14px; }
+  .modal-images { grid-template-columns: 1fr; }
+  .modal-section { margin-bottom: 24px; }
+}
+
+/* ---------- Touch device hover fallbacks ---------- */
+@media (hover: none) {
+  .project-card::after { opacity: 0.5; }
+  .project-card:hover { transform: none; }
+  .project-card:active { transform: scale(0.98); }
+  .btn-primary:hover { transform: none; }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-secondary:hover { transform: none; }
+  .btn-secondary:active { transform: scale(0.97); }
+  .contact-link:hover { transform: none; }
+  .contact-link:active { transform: scale(0.97); }
+  .about-card:hover { transform: none; }
+  .about-card:active { transform: scale(0.98); }
+}
 </style>
 </head>
 <body>
@@ -381,13 +591,17 @@ body.modal-open { overflow: hidden; }
 <nav class="nav">
   <div class="nav-inner">
     <a href="#" class="nav-logo">郭<span>德仓</span></a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="navLinks">
 	      <li><a href="#skills">技能</a></li>
 	      <li><a href="#projects">项目</a></li>
 	      <li><a href="#experience">经历</a></li>
 	      <li><a href="#about">关于我</a></li>
+	      <li class="nav-mobile-only"><a href="#contact">联系我</a></li>
     </ul>
-    <a href="#contact" class="nav-cta">联系我</a>
+    <a href="#contact" class="nav-cta nav-desktop-only">联系我</a>
+    <button class="nav-toggle" id="navToggle" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
@@ -1002,6 +1216,58 @@ document.getElementById('wechatBtn').addEventListener('click', function(e) {
   }).catch(() => {
     alert('微信号：' + wechat);
   });
+});
+
+// ==================== Mobile Nav Toggle ====================
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+let navOverlay = null;
+
+function openNav() {
+  navToggle.classList.add('active');
+  navLinks.classList.add('open');
+  // Create overlay
+  if (!navOverlay) {
+    navOverlay = document.createElement('div');
+    navOverlay.className = 'nav-overlay';
+    document.body.appendChild(navOverlay);
+  }
+  navOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeNav() {
+  navToggle.classList.remove('active');
+  navLinks.classList.remove('open');
+  if (navOverlay) navOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+navToggle.addEventListener('click', () => {
+  if (navLinks.classList.contains('open')) {
+    closeNav();
+  } else {
+    openNav();
+  }
+});
+
+// Close nav when clicking overlay
+document.addEventListener('click', (e) => {
+  if (navOverlay && e.target === navOverlay) closeNav();
+});
+
+// Close nav when clicking a nav link (mobile)
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    if (navLinks.classList.contains('open')) closeNav();
+  });
+});
+
+// Close nav on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+    closeNav();
+  }
 });
 
 console.log('👋 你好！这个网站由 Claude Code AI 辅助生成（90%+ 代码）。');
