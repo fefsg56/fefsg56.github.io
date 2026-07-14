@@ -1267,20 +1267,12 @@ document.addEventListener('click', function(e) {
   if (navOverlay && e.target === navOverlay) closeNav();
 });
 
-// Close nav + scroll when clicking a nav link on mobile
+// Close nav when clicking a link - browser handles native hash scroll
 navLinks.querySelectorAll('a').forEach(function(link) {
   link.addEventListener('click', function(e) {
     if (!navLinks.classList.contains('open')) return;
-    e.preventDefault();
-    e.stopPropagation();
-    var href = this.getAttribute('href');
+    // Let browser handle hash navigation (html has scroll-behavior:smooth)
     closeNav();
-    if (href && href !== '#') {
-      var target = document.querySelector(href);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
   });
 });
 
